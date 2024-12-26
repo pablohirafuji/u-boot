@@ -1397,7 +1397,11 @@ static unsigned long mctl_calc_size(const struct dram_config *config)
 	u8 width = config->bus_full_width ? 4 : 2;
 
 	/* 8 banks */
-	return (1ULL << (config->cols + config->rows + 3)) * width * config->ranks;
+	unsigned long long memsz = (1ULL << (config->cols + config->rows + 3)) * width * config->ranks;
+	log_info("detected memsize %d M\n", (int)(memsz >> 20));
+	/* 1.5 GB hardcoded */
+	memsz = 2048UL * 1024UL * 1024UL * 3 / 4;
+	return memsz;
 }
 
 static const struct dram_para para = {
